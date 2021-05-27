@@ -52,6 +52,11 @@ class Pizzaiolo
     private Pizzeria $employeur;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Pizzeria::class, inversedBy="pizzaiolo")
+     */
+    private $pizzeria;
+
+    /**
      * @return int
      */
     public function getId(): ?int
@@ -142,6 +147,18 @@ class Pizzaiolo
     public function setEmployeur(Pizzeria $employeur = null): Pizzaiolo
     {
         $this->employeur = $employeur;
+
+        return $this;
+    }
+
+    public function getPizzeria(): ?Pizzeria
+    {
+        return $this->pizzeria;
+    }
+
+    public function setPizzeria(?Pizzeria $pizzeria): self
+    {
+        $this->pizzeria = $pizzeria;
 
         return $this;
     }

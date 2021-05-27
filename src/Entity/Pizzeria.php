@@ -52,12 +52,24 @@ class Pizzeria
     private Collection $pizzaiolos;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Pizza::class, inversedBy="pizzerias")
+     */
+    private $pizza;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Pizzaiolo::class, mappedBy="pizzeria")
+     */
+    private $pizzaiolo;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->pizzas = new ArrayCollection();
         $this->pizzaiolos = new ArrayCollection();
+        $this->pizza = new ArrayCollection();
+        $this->pizzaiolo = new ArrayCollection();
     }
 
     /**
@@ -188,5 +200,21 @@ class Pizzeria
     public function getPizzaiolos() :Collection
     {
         return $this->pizzaiolos;
+    }
+
+    /**
+     * @return Collection|Pizza[]
+     */
+    public function getPizza(): Collection
+    {
+        return $this->pizza;
+    }
+
+    /**
+     * @return Collection|Pizzaiolo[]
+     */
+    public function getPizzaiolo(): Collection
+    {
+        return $this->pizzaiolo;
     }
 }

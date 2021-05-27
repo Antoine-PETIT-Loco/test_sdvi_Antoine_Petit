@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,6 +41,16 @@ class IngredientPizza
      * )
      */
     private Ingredient $ingredient;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Pizza::class, mappedBy="IngredientPizza")
+     */
+    private $pizzas;
+
+    public function __construct()
+    {
+        $this->pizzas = new ArrayCollection();
+    }
 
     /**
      * @param float $grammes
@@ -102,6 +114,36 @@ class IngredientPizza
     public function setIngredient(Ingredient $ingredient): IngredientPizza
     {
         $this->ingredient = $ingredient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Pizza[]
+     */
+    public function getPizzas(): Collection
+    {
+        return $this->pizzas;
+    }
+
+    public function addPizza(Pizza $pizza): self
+    {
+        if (!$this->pizzas->contains($pizza)) {
+            $this->pizzas[] = $pizza;
+            $pizza->setIngredientPizza($this);
+        }
+
+        return $this;
+    }
+
+    public function removePizza(Pizza $pizza): self
+    {
+        if ($this->pizzas->removeElement($pizza)) {
+            // set the owning side to null (unless already changed)
+            if ($pizza->getIngredientPizza() === $this) {
+                $pizza->setIngredientPizza(null);
+            }
+        }
 
         return $this;
     }
