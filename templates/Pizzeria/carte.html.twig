@@ -1,1 +1,39 @@
 
+{% extends "base.html.twig" %}
+
+{% block title %}la Carte {{  }}{% endblock %}
+
+{% block titrePage %}
+    Les pizzérias
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>La carte {{ ma_pizzeria.nom }}</th>
+            <th>
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                {{ ma_pizzeria.numTelephone }}
+            </th>
+            <th></th>
+        </tr>
+        {% for carte in carte_pizzeria %}
+            <tr>
+                <td>{{ carte.nom }}</td>
+                <td>
+                    <i  aria-hidden="true"></i>
+                    {{ carte.prix }}
+                </td>
+                <td>
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    {{ carte.numTelephone }}
+                </td>
+                <td>
+                    <a href="{{ path("app_pizzeria_detail", {"pizzeriaId":pizzeria.id}) }}">
+                        <i class="fa fa-caret-square-o-right tp-link" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

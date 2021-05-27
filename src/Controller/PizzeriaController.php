@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Entity\Pizzeria;
 use App\Service\Dao\PizzeriaDao;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,8 +42,23 @@ class PizzeriaController extends AbstractController
      *
      * @return Response
      */
-    public function detailAction($pizzeriaId): Response
+    public function detailAction(PizzeriaDao $pizzeriaDao, $pizzeriaId): Response
     {
-        return new Response("Carte de la pizzéria {$pizzeriaId}");
+        $maPizzeria = null;
+        $pizzerias = $pizzeriaDao->getAllPizzerias();
+        foreach ($pizzerias as $pizzeria){
+            if ($pizzeria->getId() ==$pizzeriaId){
+                $maPizzeria = $pizzeria;
+            }
+        }
+
+        $cartePizzeria = $pizzeriaDao->getCartePizzeria($pizzeriaId);
+
+        //var_dump($cartePizzeria);
+
+        return $this->render("Pizzeria/carte.html.twig", [
+            "ma_pizzeria" => $maPizzeria,
+            "carte_pizzeria" => $cartePizzeria
+        ]);
     }
 }
